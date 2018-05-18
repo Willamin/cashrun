@@ -1,5 +1,18 @@
 # cashrun
 
+Cashrun allows you to run scripts written in Crystal quickly. The first time
+you run a Crystal script, it will be compiled and cached. As long as the
+script didn't change, the compiled binary will be used in the future.
+
+## Usage
+
+Cashrun should be specified in your script's shebang. For example:
+```crystal
+#!/usr/bin/env cashrun
+
+puts "hello from crystal!"
+```
+
 ## Contributing
 
 1. Fork it ( https://github.com/willamin/cashrun/fork )
