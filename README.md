@@ -13,6 +13,12 @@ Cashrun should be specified in your script's shebang. For example:
 puts "hello from crystal!"
 ```
 
+## Caveats
+
+This tool does not automatically remove old compiled binaries. That may be a
+future feature, but for the time being, you'll need to clean up after yourself.
+
+
 ## Contributing
 
 1. Fork it ( https://github.com/willamin/cashrun/fork )
