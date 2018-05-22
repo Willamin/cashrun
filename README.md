@@ -1,8 +1,9 @@
 # cashrun
 
-Cashrun allows you to run scripts written in Crystal quickly. The first time
-you run a Crystal script, it will be compiled and cached. As long as the
-script didn't change, the compiled binary will be used in the future.
+Designed to facilitate using Crystal for short shell scripts, Cashrun allows
+you to more simply run scripts written in Crystal. The first time you run a Crystal
+script, it will be compiled and cached. As long as the script didn't change,
+the compiled binary will be used in the future.
 
 ## Usage
 
