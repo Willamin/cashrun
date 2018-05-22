@@ -6,6 +6,7 @@ class Cashrun::CLI
   def self.parse
     config = Cashrun::Configuration.default.to_partial
     script : String = ""
+    remaining : Array(String) = [] of String
 
     OptionParser.new do |parser|
       parser.banner = "Usage: #{PROGRAM_NAME} [arguments] SCRIPT_FILE"
@@ -15,12 +16,16 @@ class Cashrun::CLI
       parser.on("-h", "--help", "Show this help") { show_usage(parser) }
       parser.on("--verbose", "Be more verbose") { config.verbose = true }
       parser.on("--version", "Show the version") { STDERR.puts "cashrun v#{Cashrun::VERSION}"; exit 1 }
-      parser.unknown_args { |args| show_usage(parser) if args.size != 1; script = args[0] }
+      parser.unknown_args do |args|
+        show_usage(parser) if args.size == 0
+        script = args[0]
+        remaining = args[1..-1]
+      end
 
       parser.parse!
     end
 
-    {config.unpartial, script}
+    {config.unpartial, script, remaining}
   end
 
   def self.show_usage(parser)

@@ -4,7 +4,7 @@ module Cashrun
   VERSION = {{ `shards version #{__DIR__}`.chomp.stringify }}
 end
 
-config, script_name = Cashrun::CLI.parse
+config, script_name, remaining_args = Cashrun::CLI.parse
 config.parse_file!
 STDERR.puts "Config: #{config}" if config.verbose
 STDERR.puts "Running #{script_name}" if config.verbose
@@ -30,4 +30,4 @@ unless File.exists?(cached_name)
   Process.run(command: "crystal", args: [script_name, "-o", cached_name])
 end
 
-Process.exec(command: cached_name)
+Process.exec(command: cached_name, args: remaining_args)
