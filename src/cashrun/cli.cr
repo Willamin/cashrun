@@ -13,6 +13,7 @@ class Cashrun::CLI
       parser.on("--config=CONFIG_FILE", "Specifies the configuration file to use") { |f| config.config_file = f }
       parser.on("--cache=CACHE_DIR", "Specifies the directory to use for storing cached binaries") { |d| config.cache_directory = d }
       parser.on("--hash=HASH", "Specifies the hash to use for the cache") { |h| config.digest = Cashrun::Configuration.decide_hash(h) || show_usage(parser) }
+      parser.on("--release", "Specifies whether to compile in release mode") { config.release = true }
       parser.on("-h", "--help", "Show this help") { show_usage(parser) }
       parser.on("--verbose", "Be more verbose") { config.verbose = true }
       parser.on("--version", "Show the version") { STDERR.puts "cashrun v#{Cashrun::VERSION}"; exit 1 }
