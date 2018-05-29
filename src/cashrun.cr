@@ -28,6 +28,8 @@ end
 unless File.exists?(cached_name)
   STDERR.puts "Cached executable does not exist." if config.verbose
 
+  real_script_location = File.real_path(File.expand_path(script_name))
+
   args = [
     "build",
     script_name,
@@ -39,8 +41,8 @@ unless File.exists?(cached_name)
     args << "--release"
   end
 
-  STDERR.puts "running `crystal #{args.join(" ")}`" if config.verbose
-  Process.run(command: "crystal", args: args)
+  STDERR.puts "running `crystal #{args.join(" ")}` after chdir: `#{real_script_location}`" if config.verbose
+  Process.run(command: "crystal", args: args, chdir: real_script_location)
 end
 
 STDERR.puts "running `#{cached_name} #{remaining_args.join(" ")}`" if config.verbose
