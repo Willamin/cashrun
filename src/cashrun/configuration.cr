@@ -72,6 +72,10 @@ class Cashrun::Configuration
       return
     end
 
+    if File.directory?(filename)
+      return
+    end
+
     yaml = YAML.parse(File.read(filename))
 
     if yaml["cache_directory"]?

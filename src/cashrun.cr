@@ -28,18 +28,20 @@ end
 unless File.exists?(cached_name)
   STDERR.puts "Cached executable does not exist." if config.verbose
 
-  release_flag = ""
-  if config.release
-    release_flag = "--release"
-  end
-
-  Process.run(command: "crystal", args: [
+  args = [
     "build",
     script_name,
     "-o", cached_name,
     "--no-debug",
-    release_flag,
-  ])
+  ]
+
+  if config.release
+    args << "--release"
+  end
+
+  STDERR.puts "running `crystal #{args.join(" ")}`" if config.verbose
+  Process.run(command: "crystal", args: args)
 end
 
+STDERR.puts "running `#{cached_name} #{remaining_args.join(" ")}`" if config.verbose
 Process.exec(command: cached_name, args: remaining_args)
