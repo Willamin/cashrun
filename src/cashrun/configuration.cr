@@ -7,11 +7,12 @@ class Cashrun::Configuration
   property digest : Digest::Base
   property verbose : Bool
   property release : Bool
+  property uncache : Bool
 
-  def initialize(@config_file, @cache_directory, @digest, @verbose, @release); end
+  def initialize(@config_file, @cache_directory, @digest, @verbose, @release, @uncache); end
 
   def self.default
-    Cashrun::Configuration.new("~/.config/cashrun", "~/.cache/cashrun", Digest::MD5.new, false, false)
+    Cashrun::Configuration.new("~/.config/cashrun", "~/.cache/cashrun", Digest::MD5.new, false, false, false)
   end
 
   def self.decide_hash(hashname) : Digest::Base?
@@ -30,12 +31,13 @@ class Cashrun::Configuration
     partial.digest = digest
     partial.verbose = verbose
     partial.release = release
+    partial.uncache = uncache
     partial
   end
 
   def to_s(io)
     io << <<-TOS
-    #<Cashrun::Configuration @config_file="#{config_file}" @cache_directory="#{cache_directory}" @digest="#{digest}" @verbose="#{verbose}" @release="#{release}" >
+    #<Cashrun::Configuration @config_file="#{config_file}" @cache_directory="#{cache_directory}" @digest="#{digest}" @verbose="#{verbose}" @release="#{release}" @uncache="#{uncache}" >
     TOS
   end
 
@@ -45,6 +47,7 @@ class Cashrun::Configuration
     property digest : Digest::Base?
     property verbose : Bool?
     property release : Bool?
+    property uncache : Bool?
 
     def unpartial
       raise MissingError.new("Missing config_file") if config_file.nil?
@@ -52,13 +55,15 @@ class Cashrun::Configuration
       raise MissingError.new("Missing digest") if digest.nil?
       raise MissingError.new("Missing verbose") if verbose.nil?
       raise MissingError.new("Missing release") if release.nil?
+      raise MissingError.new("Missing uncache") if uncache.nil?
 
       Cashrun::Configuration.new(
         config_file.not_nil!,
         cache_directory.not_nil!,
         digest.not_nil!,
         verbose.not_nil!,
-        release.not_nil!
+        release.not_nil!,
+        uncache.not_nil!
       )
     end
 
@@ -90,6 +95,13 @@ class Cashrun::Configuration
       case yaml["release"].as_s
       when "true", "True"
         @release = true
+      end
+    end
+
+    if yaml["uncache"]?
+      case yaml["uncache"].as_s
+      when "true", "True"
+        @uncache = true
       end
     end
   end

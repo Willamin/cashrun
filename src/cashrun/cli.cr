@@ -17,6 +17,7 @@ class Cashrun::CLI
       parser.on("-h", "--help", "Show this help") { show_usage(parser) }
       parser.on("--verbose", "Be more verbose") { config.verbose = true }
       parser.on("--version", "Show the version") { STDERR.puts "cashrun v#{Cashrun::VERSION}"; exit 1 }
+      parser.on("--uncache", "Remove the cached binary for the script") { config.uncache = true }
       parser.unknown_args do |args|
         show_usage(parser) if args.size == 0
         script = args[0]

@@ -31,10 +31,18 @@ unless Dir.exists?(File.expand_path(config.cache_directory))
   Dir.mkdir_p(File.expand_path(config.cache_directory))
 end
 
+if config.uncache
+  if File.exists?(cached_name)
+    vputs "Uncaching file."
+    File.delete(cached_name)
+    exit 0
+  end
+end
+
 unless File.exists?(cached_name)
   vputs "Cached executable does not exist."
 
-  real_script_location = File.real_path(File.expand_path(script_name))
+  real_script_location = File.dirname(File.real_path(File.expand_path(script_name)))
 
   args = [
     "build",
