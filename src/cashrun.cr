@@ -46,7 +46,7 @@ unless File.exists?(cached_name)
 
   args = [
     "build",
-    script_name,
+    File.basename(script_name),
     "-o", cached_name,
     "--no-debug",
   ]
@@ -56,7 +56,10 @@ unless File.exists?(cached_name)
   end
 
   vputs "running `crystal #{args.join(" ")}` after chdir: `#{real_script_location}`"
-  Process.run(command: "crystal", args: args, chdir: real_script_location)
+  status = Process.run(command: "crystal", args: args, chdir: real_script_location, error: STDERR)
+  unless status.success?
+    exit 1
+  end
 end
 
 vputs "running `#{cached_name} #{remaining_args.join(" ")}`"
