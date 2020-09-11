@@ -1,7 +1,8 @@
 require "./cashrun/*"
 
 module Cashrun
-  VERSION = {{ `shards version #{__DIR__}`.chomp.stringify }}
+  VERSION         = {{ `shards version #{__DIR__}`.chomp.stringify }}
+  CRYSTAL_VERSION = {{ `crystal --version`.chomp.stringify }}
 end
 
 macro vputs(string)
